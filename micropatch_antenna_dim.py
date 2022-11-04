@@ -6,11 +6,12 @@ class micropatch:
     def __init__(self):
         self.c = 299792458 # speed of light
 
-        self.freq = 10*10**9 # operating/resonant frequency
-        self.er = 2.2 # dielectric constant
-        self.h = .1588*10**-2 # height of dielectric
+        self.freq = 2.4*10**9 # operating/resonant frequency
+        self.er = 4.6 # dielectric constant
+        self.h = .93*10**-3 # height of dielectric
 
-    def approximate_calc(self):
+    def approximate_calc_dim(self):
+        velocity = self.c
         w = ((velocity)/(2*self.freq)*math.sqrt(2/(self.er+1)))
         e_eff = ((self.er+1)/2)+((self.er-1)/2)*(1+12*self.h/w)**(-0.5)
         print(e_eff)
@@ -19,9 +20,24 @@ class micropatch:
         wavelength = velocity/(self.freq*math.sqrt(e_eff))
         l = wavelength/2 - 2*delta_l
         l_eff = l+2*delta_l
-        print("L = %f, W = %f, E_eff = %f, L_eff = %f"%(l,w,e_eff,l_eff))
+
+        self.w = w
+        self.e_eff = e_eff
+        self.delta_l = delta_l
+        self.l = l
+        self.l_eff = l_eff
+
+        self.g_l = self.l+self.h*6
+        self.g_w = self.w+self.h*6
+        print("L = %f, W = %f, E_eff = %f, L_eff = %f, g_l = %f, g_w =%f"%(l,w,e_eff,l_eff,self.g_l,self.g_w))
         return (l,w,e_eff,l_eff)
+    def approximate_calc_imped_res(self):
+        r_in = 90*(self.er)**2/(self.er-1)*(self.l/self.w)
+        return r_in
+        print("calc_imped")
 
 if __name__ == '__main__':
     micropatch = micropatch()
-    (l,w,e_eff,l_eff) = micropatch.approximate_calc()
+    (l,w,e_eff,l_eff) = micropatch.approximate_calc_dim()
+    print(micropatch.approximate_calc_imped_res())
+
