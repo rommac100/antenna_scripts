@@ -7,7 +7,7 @@ class micropatch:
         self.c = 299792458 # speed of light
 
         self.freq = 2.4*10**9 # operating/resonant frequency
-        self.er = 4.6 # dielectric constant
+        self.er = 4.5 # dielectric constant
         self.h = .93*10**-3 # height of dielectric
 
     def approximate_calc_dim(self):
